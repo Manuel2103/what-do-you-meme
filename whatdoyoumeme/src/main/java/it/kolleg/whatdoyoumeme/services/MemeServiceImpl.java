@@ -1,6 +1,7 @@
 package it.kolleg.whatdoyoumeme.services;
 
 import it.kolleg.whatdoyoumeme.domain.Meme;
+import it.kolleg.whatdoyoumeme.exceptions.MemeNotFound;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -22,12 +23,12 @@ public class MemeServiceImpl implements MemeService{
     }
 
     @Override
-    public Meme gibMemeMitID(Long id) {
+    public Meme gibMemeMitID(Long id) throws MemeNotFound {
         return this.dbZugriffMeme.getMemeByID(id);
     }
 
     @Override
-    public void loescheMemeMitID(Long id) {
+    public void loescheMemeMitID(Long id) throws MemeNotFound {
         this.dbZugriffMeme.deleteMemeByID(id);
     }
 
@@ -57,7 +58,7 @@ public class MemeServiceImpl implements MemeService{
     }
 
     @Override
-    public Meme gibFavoriteMeme() {
+    public Meme gibFavoriteMeme() throws MemeNotFound {
         return this.dbZugriffMeme.getFavMeme();
     }
 }

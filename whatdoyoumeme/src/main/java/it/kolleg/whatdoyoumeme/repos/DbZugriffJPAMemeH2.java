@@ -1,6 +1,7 @@
 package it.kolleg.whatdoyoumeme.repos;
 
 import it.kolleg.whatdoyoumeme.domain.Meme;
+import it.kolleg.whatdoyoumeme.exceptions.MemeNotFound;
 import it.kolleg.whatdoyoumeme.services.DbZugriffMeme;
 import org.springframework.stereotype.Component;
 
@@ -28,13 +29,24 @@ public class DbZugriffJPAMemeH2 implements DbZugriffMeme {
     }
 
     @Override
-    public Meme getMemeByID(Long id) {
-        return this.memeJPARepo.findById(id).get();
+    public Meme getMemeByID(Long id) throws MemeNotFound {
+        try {
+            return this.memeJPARepo.findById(id).get();
+        }catch (Exception e){
+            throw new MemeNotFound();
+
+        }
+
     }
 
     @Override
-    public void deleteMemeByID(Long id) {
-        this.memeJPARepo.deleteById(id);
+    public void deleteMemeByID(Long id) throws MemeNotFound {
+        try {
+            this.memeJPARepo.deleteById(id);
+        }catch (Exception e){
+            throw new MemeNotFound();
+        }
+
     }
 
     @Override
@@ -44,7 +56,7 @@ public class DbZugriffJPAMemeH2 implements DbZugriffMeme {
 
     @Override
     public List<Meme> last5Memes() {
-
+        //TODO
         return null;
     }
 
@@ -58,7 +70,7 @@ public class DbZugriffJPAMemeH2 implements DbZugriffMeme {
 
     @Override
     public Meme getlatestMeme(Date date) {
-        //get last entry
+        //TODO get last entry
         return null;
     }
 
@@ -68,19 +80,23 @@ public class DbZugriffJPAMemeH2 implements DbZugriffMeme {
     }
 
     @Override
-    public Meme getFavMeme() {
+    public Meme getFavMeme() throws MemeNotFound {
         List<Meme> memeList = this.memeJPARepo.findAll();
-        Meme bestMeme = memeList.get(0);
+        try {
+            Meme bestMeme = memeList.get(0);
 
-        for (int i = 1; i < memeList.size(); i++) {
-            if(bestMeme.getLikes() == memeList.get(i).getLikes()){
-                if(bestMeme.getDate().after(memeList.get(i).getDate())){
+            for (int i = 1; i < memeList.size(); i++) {
+                if (bestMeme.getLikes() == memeList.get(i).getLikes()) {
+                    if (bestMeme.getDate().after(memeList.get(i).getDate())) {
+                        bestMeme = memeList.get(i);
+                    }
+                } else if (bestMeme.getLikes() < memeList.get(i).getLikes()) {
                     bestMeme = memeList.get(i);
                 }
-            } else if(bestMeme.getLikes() < memeList.get(i).getLikes()) {
-                bestMeme = memeList.get(i);
             }
+            return bestMeme;
+        } catch (Exception e) {
+            throw new MemeNotFound();
         }
-        return bestMeme;
     }
 }

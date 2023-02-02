@@ -1,6 +1,7 @@
 package it.kolleg.whatdoyoumeme.services;
 
 import it.kolleg.whatdoyoumeme.domain.Quote;
+import it.kolleg.whatdoyoumeme.exceptions.QuoteNotFound;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,12 +26,12 @@ public class QuoteServiceImpl implements QuoteService{
     }
 
     @Override
-    public Quote gibQuoteMitID(Long id) {
+    public Quote gibQuoteMitID(Long id) throws QuoteNotFound {
         return this.dbZugriffQuote.getQuoteById(id);
     }
 
     @Override
-    public void loescheQuote(Long id) {
+    public void loescheQuote(Long id) throws QuoteNotFound {
         this.dbZugriffQuote.deleteQuoteById(id);
     }
 

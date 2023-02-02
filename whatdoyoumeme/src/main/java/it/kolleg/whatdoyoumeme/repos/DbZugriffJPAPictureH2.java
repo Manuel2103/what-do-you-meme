@@ -1,6 +1,7 @@
 package it.kolleg.whatdoyoumeme.repos;
 
 import it.kolleg.whatdoyoumeme.domain.Picture;
+import it.kolleg.whatdoyoumeme.exceptions.PictureNotFound;
 import it.kolleg.whatdoyoumeme.services.DbZugriffPicture;
 import org.springframework.stereotype.Component;
 
@@ -17,11 +18,16 @@ public class DbZugriffJPAPictureH2 implements DbZugriffPicture {
     }
 
     @Override
-    public Picture getRandomPicture() {
+    public Picture getRandomPicture() throws PictureNotFound {
 
         Random random = new Random();
-        Long randomID = random.nextLong(1,this.pictureJPARepo.count()+1);
-        return this.pictureJPARepo.findById(randomID).get();
+        try {
+            Long randomID = random.nextLong(1,this.pictureJPARepo.count()+1);
+            return this.pictureJPARepo.findById(randomID).get();
+        }catch (Exception e){
+            throw new PictureNotFound();
+        }
+
     }
 
     @Override
@@ -37,14 +43,24 @@ public class DbZugriffJPAPictureH2 implements DbZugriffPicture {
     }
 
     @Override
-    public Picture getPictureById(Long id) {
-        //Optional check heast
-        return this.pictureJPARepo.findById(id).get();
+    public Picture getPictureById(Long id) throws PictureNotFound {
+        try {
+            return this.pictureJPARepo.findById(id).get();
+        }catch (Exception e){
+            throw new PictureNotFound();
+        }
+
     }
 
     @Override
-    public void deletePictureById(Long id) {
-        this.pictureJPARepo.deleteById(id);
+    public void deletePictureById(Long id) throws PictureNotFound {
+        try {
+            this.pictureJPARepo.deleteById(id);
+
+        }catch (Exception e){
+            throw new PictureNotFound();
+        }
+
     }
 
     @Override

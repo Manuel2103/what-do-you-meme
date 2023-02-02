@@ -1,6 +1,7 @@
 package it.kolleg.whatdoyoumeme.services;
 
 import it.kolleg.whatdoyoumeme.domain.Picture;
+import it.kolleg.whatdoyoumeme.exceptions.PictureNotFound;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class PictureServiceImpl implements PictureService{
     }
 
     @Override
-    public Picture gibRandomPicture() {
+    public Picture gibRandomPicture() throws PictureNotFound {
         return this.dbZugriffPicture.getRandomPicture();
     }
 
@@ -30,12 +31,12 @@ public class PictureServiceImpl implements PictureService{
     }
 
     @Override
-    public Picture gibPictureMitId(Long id) {
+    public Picture gibPictureMitId(Long id) throws PictureNotFound {
         return this.dbZugriffPicture.getPictureById(id);
     }
 
     @Override
-    public void loeschePictureMitId(Long id) {
+    public void loeschePictureMitId(Long id) throws PictureNotFound {
         this.dbZugriffPicture.deletePictureById(id);
     }
 
