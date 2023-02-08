@@ -41,7 +41,7 @@ public class QuoteServiceImpl implements QuoteService{
     }
 
     @Override
-    public List<Quote> gib4RandomQuotes() {
+    public List<Quote> gib4RandomQuotes() throws QuoteNotFound {
         return this.dbZugriffQuote.get4RandomQuotes();
     }
 }

@@ -19,7 +19,6 @@ public class Meme {
     private long id;
     @NotNull
     private Date date;
-    @Size(min=0)
     private long likes;
     @ManyToOne(fetch = FetchType.EAGER)
     private Picture picture;

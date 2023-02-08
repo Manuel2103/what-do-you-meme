@@ -12,7 +12,7 @@ public interface QuoteService {
     public Quote gibQuoteMitID(Long id) throws QuoteNotFound;
     public void loescheQuote(Long id) throws QuoteNotFound;
     public void aktualisiereQuote(Quote quote);
-    public List<Quote> gib4RandomQuotes();
+    public List<Quote> gib4RandomQuotes() throws QuoteNotFound;
 
 
 }
