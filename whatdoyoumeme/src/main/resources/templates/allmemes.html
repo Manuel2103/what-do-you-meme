@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Memes</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2" th:each="meme : ${memes}">
+            <div class="card" style="width: 18rem;">
+                <img th:src="@{${meme.picture.url}}" class="card-img-top" th:alt="${meme.picture.name}">
+                <div class="card-body">
+                    <p class="card-text" th:text="${meme.quote.text}"></p>
+                    <p class="card-text">Likes: <strong th:text="${meme.likes}"></strong></p>
+                    <p class="card-text" th:text="${meme.date}"></p>
+                    <a th:href="@{/web/addlike/{id}(id=${meme.id})}" class="btn btn-primary">Liken</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

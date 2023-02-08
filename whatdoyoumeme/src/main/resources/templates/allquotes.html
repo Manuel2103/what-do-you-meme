@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quotes</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container-fluid ">
+    <h1>All Quotes</h1>
+
+    <table class="table">
+        <th:block th:each="quote : ${quotes}">
+            <tr>
+                <td th:text="${quote.id}"></td>
+                <td th:text="${quote.text}"></td>
+            </tr>
+
+        </th:block>
+    </table>
+
+
+</div>
+
+</body>
+</html>
