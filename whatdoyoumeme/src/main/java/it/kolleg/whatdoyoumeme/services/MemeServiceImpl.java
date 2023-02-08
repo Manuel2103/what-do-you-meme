@@ -12,6 +12,10 @@ public class MemeServiceImpl implements MemeService{
 
     private DbZugriffMeme dbZugriffMeme;
 
+    public MemeServiceImpl(DbZugriffMeme dbZugriffMeme) {
+        this.dbZugriffMeme = dbZugriffMeme;
+    }
+
     @Override
     public void speichereMeme(Meme meme) {
         this.dbZugriffMeme.addMeme(meme);

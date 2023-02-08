@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <title>What Do You Meme?</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1>Alle Memes</h1>
+        <hr class="border-2 border-top border-primary">
+        <a href="#" class="btn btn-primary" role="button">alle Pictures</a>
+        <a href="#" class="btn btn-primary" role="button">alle Quotes</a>
+        <hr class="border-2 border-top border-primary">
+        <div id="memecards">
+                <!--cards-->
+        </div>      
+    </div>
+</body>
+<script>
+
+getAllMemes();
+
+async function getAllMemes() {
+    let response = await fetch('http://localhost:8080/api/whatdoyoumeme/allmemes',
+    {
+        method : 'GET',
+        cache : 'no-cache',
+        headers: {
+            'Accept':'application/json'
+        }
+    }
+
+    
+    );
+    let data = await response.json();
+    
+    var memecards = document.getElementById('memecards');
+
+    data.forEach((meme) => 
+    {
+        let col = document.createElement('div');
+        col.classList.add('col-sm-6')
+
+        let carddiv = document.createElement("div");
+        carddiv.classList.add('card');
+        carddiv.style = 'width: 18rem';
+
+        let picture = document.createElement("img");
+        picture.src = meme.picture.url;
+        picture.classList.add('card-img-top');
+
+        let cardbody = document.createElement("div");
+        cardbody.classList.add('card-body');
+
+        let quote = document.createElement("p");
+        quote.appendChild(document.createTextNode(meme.quote.text));
+
+        let date = document.createElement("p");
+        date.appendChild(document.createTextNode(meme.date));
+
+        let likes = document.createElement("p");
+        likes.appendChild(document.createTextNode(meme.likes));
+        //action.innerHTML = `<a href="updateMeme.html?id=${quote.id}&name=${student.name}&plz=${student.plz}" class="btn btn-primary" role="button">bearbeiten</a> <button type="button" class="btn btn-warning" onclick="deleteStudent(${student.id})">löschen</button>`
+        
+
+        memecards.appendChild(col);
+        col.appendChild(carddiv);
+        carddiv.appendChild(picture);
+        carddiv.appendChild(cardbody);
+        cardbody.appendChild(quote);
+        cardbody.appendChild(date);
+        cardbody.appendChild(likes);
+    
+    })
+}
+
+
+</script>
+</html>
