@@ -17,7 +17,7 @@
             <div id="memequotes" class="row"></div>
         </div>
     </div>
-    
+
 
 
 </body>
@@ -41,34 +41,35 @@
         var memequotes = document.getElementById('memequotes');
 
         data.forEach((randomquote) => {
-                let col = document.createElement('div');
-                col.classList.add('col', 'm-1');
+            let col = document.createElement('div');
+            col.classList.add('col', 'm-1');
 
-                let carddiv = document.createElement("div");
-                carddiv.classList.add('card','bg-primary');
-                carddiv.style = 'width: 18rem';
+            let carddiv = document.createElement("div");
+            carddiv.classList.add('card', 'bg-primary');
+            carddiv.style = 'width: 18rem';
 
-                let cardbody = document.createElement("div");
-                cardbody.classList.add('card-body', 'text-white');
+            let cardbody = document.createElement("div");
+            cardbody.classList.add('card-body', 'text-white');
 
-                let quote = document.createElement("p");
-                quote.classList.add('card-text');
-                quote.appendChild(document.createTextNode(randomquote.text));
+            let quote = document.createElement("p");
+            quote.classList.add('card-text');
+            quote.appendChild(document.createTextNode(randomquote.text));
 
-                let likes = document.createElement("button");
-                likes.addEventListener("click", function match() { matching(randomquote.id); });
-                likes.innerHTML = "Add me!";
-                likes.classList.add('btn', 'btn-light');
+            let likes = document.createElement("button");
+            let pid = document.getElementById("pid").innerHTML;
+            likes.addEventListener("click", function match() { matching(randomquote.id, pid); });
+            likes.innerHTML = "Add me!";
+            likes.classList.add('btn', 'btn-light');
 
-                memequotes.appendChild(col);
-                col.appendChild(carddiv);
-                carddiv.appendChild(cardbody);
-                cardbody.appendChild(quote);
-                cardbody.appendChild(likes);
+            memequotes.appendChild(col);
+            col.appendChild(carddiv);
+            carddiv.appendChild(cardbody);
+            cardbody.appendChild(quote);
+            cardbody.appendChild(likes);
 
         })
 
-        
+
     }
 
     async function getRandomPicture() {
@@ -89,9 +90,9 @@
                 picture.style.height = "300px"
 
                 let pid = document.createElement("p");
-                pid.setAttribute("id","pid");
+                pid.setAttribute("id", "pid");
                 pid.innerHTML = randompic.id;
-                pid.hidden=true;
+                pid.hidden = true;
 
                 memepicture.appendChild(col);
                 col.appendChild(picture);
@@ -100,13 +101,13 @@
             })
     }
 
-    function matching(id){
-        alert("Match!");
-        fetch('http://localhost:8080/api/whatdoyoumeme/meme/like/'+id, {
+    async function matching(qid, pid) {
+        fetch('http://localhost:8080/api/whatdoyoumeme/memes/' + pid + '/' + qid, {
             method: 'GET'
         })
-            .then(response => console.log(response.status))
-            
+            .then(response => console.log(response.status));
+
+        document.location.reload();
     }
 </script>
 

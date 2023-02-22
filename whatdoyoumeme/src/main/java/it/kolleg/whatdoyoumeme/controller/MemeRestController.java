@@ -42,19 +42,13 @@ public class MemeRestController {
         return ResponseEntity.ok(this.memeService.gibMemeMitID(id));
     }
 
-    @PostMapping("/memes/{pid}/{qid}")
-    public ResponseEntity<String> addMeme(@PathVariable Long pid, @PathVariable Long qid, BindingResult bindingResult) throws FormValidierungFehlgeschlagen {
-        FormValildierungExceptionDTO formValildierungExceptionDTO = new FormValildierungExceptionDTO("2000");
-        if (bindingResult.hasErrors()){
-            for (ObjectError error : bindingResult.getAllErrors()){
-                formValildierungExceptionDTO.addFormValidationError(((FieldError)error).getField(), error.getDefaultMessage());
-            }
-            throw new FormValidierungFehlgeschlagen(formValildierungExceptionDTO);
-        } else {
+    @GetMapping("/memes/{pid}/{qid}")
+    public ResponseEntity<String> addMeme(@PathVariable Long pid, @PathVariable Long qid) throws PictureNotFound, QuoteNotFound {
+        System.out.println("PID:"+pid);
+        System.out.println("QID:"+qid);
 
-            //this.memeService.speichereMeme(new Meme());
+            this.memeService.speichereMeme(new Meme(this.pictureService.gibPictureMitId(pid),this.quoteService.gibQuoteMitID(qid)));
             return ResponseEntity.ok("Meme erfolgreich hinzugefügt");
-        }
     }
 
     @GetMapping("/pictures/random1")
