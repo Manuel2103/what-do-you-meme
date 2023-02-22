@@ -10,10 +10,14 @@
 <body>
 
 <div class="container-fluid">
+    <h1>All Memes</h1>
+
+    <a th:href="@{/web/addmeme}" class="btn btn-info">Play</a>
+    <br>
     <div class="row">
-        <div class="col-sm-2" th:each="meme : ${memes}">
-            <div class="card" style="width: 18rem;">
-                <img th:src="@{${meme.picture.url}}" class="card-img-top" th:alt="${meme.picture.name}">
+        <div class="col-md-2 d-flex align-items-stretch" th:each="meme : ${memes}">
+            <div class="card">
+                <img th:src="@{${meme.picture.url}}" class="card-img-top" style="width: 100%;height: 15vw; object-fit: cover;" th:alt="${meme.picture.name}">
                 <div class="card-body">
                     <p class="card-text" th:text="${meme.quote.text}"></p>
                     <p class="card-text">Likes: <strong th:text="${meme.likes}"></strong></p>
@@ -24,8 +28,7 @@
         </div>
     </div>
 
+
 </div>
-
-
 </body>
 </html>

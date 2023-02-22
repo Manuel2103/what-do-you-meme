@@ -1,8 +1,11 @@
 package it.kolleg.whatdoyoumeme.controller;
 
 import it.kolleg.whatdoyoumeme.domain.Meme;
+import it.kolleg.whatdoyoumeme.domain.Picture;
 import it.kolleg.whatdoyoumeme.domain.Quote;
 import it.kolleg.whatdoyoumeme.exceptions.MemeNotFound;
+import it.kolleg.whatdoyoumeme.exceptions.PictureNotFound;
+import it.kolleg.whatdoyoumeme.exceptions.QuoteNotFound;
 import it.kolleg.whatdoyoumeme.services.MemeService;
 import it.kolleg.whatdoyoumeme.services.PictureService;
 import it.kolleg.whatdoyoumeme.services.QuoteService;
@@ -47,7 +50,19 @@ public class MyThymeleafController {
         return new RedirectView("/web/allmemes");
     }
 
-
-
+    @GetMapping("web/allpictures")
+    public ModelAndView allPictures(){
+        List<Picture> pictures = pictureService.gibAllePicture();
+        return new ModelAndView("allpictures", "pictures", pictures);
+    }
+    @GetMapping("web/addmeme")
+    public ModelAndView addMeme() throws QuoteNotFound, PictureNotFound {
+        List<Quote> randomQuotes = quoteService.gib4RandomQuotes();
+        Picture randomPicture = pictureService.gibRandomPicture();
+        ModelAndView modelAndView = new ModelAndView("addmeme");
+        modelAndView.addObject("quotes", randomQuotes);
+        modelAndView.addObject("picture", randomPicture);
+        return modelAndView;
+    }
 
 }
