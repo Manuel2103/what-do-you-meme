@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Meme</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container-fluid">
+
+    <div class="text-center">
+        <div class="card mx-auto" style="width: 18rem;">
+            <img th:src="@{${picture.url}}" class="card-img-top" style="width: auto; height: 300px;object-fit: cover">
+        </div>
+    <h1>Choose a Quote to the Picture</h1>
+    <form th:action="@{/web/addmeme}" method="post" th:object="${newmeme}">
+        <div class="form-group">
+            <select class="custom-select" multiple>
+                <option th:each="quote : ${quotes}" th:text="${quote.text}" th:value=""></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Add Quote to Picture</button>
+    </form>
+    </div>
+
+</div>
+</body>
+</html>

@@ -38,7 +38,6 @@ public class DbZugriffJPAMemeH2 implements DbZugriffMeme {
         }
 
     }
-
     @Override
     public void deleteMemeByID(Long id) throws MemeNotFound {
         try {
