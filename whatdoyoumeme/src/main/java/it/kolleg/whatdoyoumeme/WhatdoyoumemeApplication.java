@@ -62,6 +62,7 @@ public class WhatdoyoumemeApplication implements ApplicationRunner {
         dbZugriffMeme.addMeme(new Meme(Date.valueOf("2023-01-22"), 2, picture2, quote1));
         dbZugriffMeme.addMeme(new Meme(Date.valueOf("2022-12-28"), 3, picture1, quote3));
         dbZugriffMeme.addMeme(new Meme(Date.valueOf("2022-11-15"), 5, picture3, quote2));
+        dbZugriffMeme.addMeme(new Meme(picture1, quote1));
 
 
     }

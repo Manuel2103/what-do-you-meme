@@ -31,4 +31,10 @@ public class Meme {
         this.picture = picture;
         this.quote = quote;
     }
+    public Meme(Picture picture, Quote quote){
+        this.picture = picture;
+        this.quote = quote;
+        this.date = new java.sql.Date(System.currentTimeMillis());
+        this.likes = 0;
+    }
 }
