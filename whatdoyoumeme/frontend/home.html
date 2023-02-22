@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <title>What do you meme!</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="text-center">
+            <div id="memepicture"></div>
+            <h2 class="m-4">Choose a quote to the picture</h2>
+            <div id="memequotes" class="row"></div>
+        </div>
+    </div>
+    
+
+
+</body>
+<script>
+
+    getRandomPicture();
+    getRandomQuotes();
+
+    async function getRandomQuotes() {
+        let response = await fetch('http://localhost:8080/api/whatdoyoumeme/quotes/random4',
+            {
+                method: 'GET',
+                cache: 'no-cache',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }
+        );
+        let data = await response.json();
+
+        var memequotes = document.getElementById('memequotes');
+
+        data.forEach((randomquote) => {
+                let col = document.createElement('div');
+                col.classList.add('col', 'm-1');
+
+                let carddiv = document.createElement("div");
+                carddiv.classList.add('card','bg-primary');
+                carddiv.style = 'width: 18rem';
+
+                let cardbody = document.createElement("div");
+                cardbody.classList.add('card-body', 'text-white');
+
+                let quote = document.createElement("p");
+                quote.classList.add('card-text');
+                quote.appendChild(document.createTextNode(randomquote.text));
+
+                let likes = document.createElement("button");
+                likes.addEventListener("click", function match() { matching(randomquote.id); });
+                likes.innerHTML = "Add me!";
+                likes.classList.add('btn', 'btn-light');
+
+                memequotes.appendChild(col);
+                col.appendChild(carddiv);
+                carddiv.appendChild(cardbody);
+                cardbody.appendChild(quote);
+                cardbody.appendChild(likes);
+
+        })
+
+        
+    }
+
+    async function getRandomPicture() {
+        fetch('http://localhost:8080/api/whatdoyoumeme/pictures/random1', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(randompic => {
+                let memepicture = document.getElementById("memepicture");
+
+
+                let col = document.createElement('div');
+                col.classList.add('col-12', 'm-4', 'text-center');
+
+                let picture = document.createElement("img");
+                picture.src = randompic.url;
+                picture.classList.add('rounded')
+                picture.style.height = "300px"
+
+                let pid = document.createElement("p");
+                pid.setAttribute("id","pid");
+                pid.innerHTML = randompic.id;
+                pid.hidden=true;
+
+                memepicture.appendChild(col);
+                col.appendChild(picture);
+                col.appendChild(pid);
+
+            })
+    }
+
+    function matching(id){
+        alert("Match!");
+        fetch('http://localhost:8080/api/whatdoyoumeme/meme/like/'+id, {
+            method: 'GET'
+        })
+            .then(response => console.log(response.status))
+            
+    }
+</script>
+
+</html>

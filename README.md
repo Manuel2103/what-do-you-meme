@@ -13,7 +13,7 @@ Diese Entitäten werden folgenden Datenfeldern und Funktionen haben:
     - id
     - name
     - kategorie
-    - url from mememaker.github.io/api
+    - url from https://api.memegen.link/templates/
     - Funktionen:
         - addPicture (Bild hinzufügen)
         - getAllPictures (alle Bilder anzeigen)
@@ -21,15 +21,14 @@ Diese Entitäten werden folgenden Datenfeldern und Funktionen haben:
         - getRandomPicture (zufälliges Bild anzeigen)
         - deletePicture (Bild löschen)
         - updatePicture (Bildinformation updaten)
-        - favoritePicture (Bild mit den meisten Likes)
 - Quote
     - id
     - text
     - Funktionen:
         - addQuote (Text hinzufügen)
         - getAllQuotes (alle Texte anzeigen)
+        - getQuoteByID
         - get4RandomQuotes (4 zufällige Texte anzeigen)
-        - favoriteQuote
         - deleteQuote (Text löschen)
         - updateQuote (Textinformation aktualisieren)
 - Meme
@@ -38,28 +37,22 @@ Diese Entitäten werden folgenden Datenfeldern und Funktionen haben:
     - pictureid
     - quoteid
     - likes
+    - Funktionen:
+        - addMeme
+        - deleteMeme
+        - showLast5Memes (letzten 5 Memees anzeigen)
+        - getAllMemes
+        - getAllMemesAfter(Datetime)
+        - getMemeByID
+        - getFavoriteMeme (meiste Likes)
+        - addLike (Like hinzufügen)
 
 Funktionen: 
 Boilerplate
 Standard-Crud
 
-Picture:
 
-
-Quote:
-
-
-Matches: 
-addMatch
-deleteMatch
-showLast5Matches
-getAllMatches
-getAllMatchesAfter(Datetime)
-getMatchByID
-getFavoriteMatch (meiste Likes)
-addLike
-
-~ deleteMatchPictureQuote
+~ deleteMemePictureQuote
 
 
 ## Backend mit Spring Boot
