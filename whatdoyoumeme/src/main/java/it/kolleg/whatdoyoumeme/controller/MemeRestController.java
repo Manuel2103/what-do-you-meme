@@ -1,6 +1,7 @@
 package it.kolleg.whatdoyoumeme.controller;
 
 
+import it.kolleg.whatdoyoumeme.domain.Kategorie;
 import it.kolleg.whatdoyoumeme.domain.Meme;
 import it.kolleg.whatdoyoumeme.domain.Picture;
 import it.kolleg.whatdoyoumeme.domain.Quote;
@@ -9,12 +10,14 @@ import it.kolleg.whatdoyoumeme.services.MemeService;
 import it.kolleg.whatdoyoumeme.services.PictureService;
 import it.kolleg.whatdoyoumeme.services.QuoteService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -30,6 +33,11 @@ public class MemeRestController {
         this.memeService = memeService;
         this.pictureService = pictureService;
         this.quoteService = quoteService;
+    }
+
+    @GetMapping("/kategories")
+    public ResponseEntity<List<Kategorie>> days() {
+        return new ResponseEntity<List<Kategorie>>(Arrays.asList(Kategorie.values()), HttpStatus.OK);
     }
 
     @GetMapping("/allmemes")
@@ -51,6 +59,11 @@ public class MemeRestController {
             return ResponseEntity.ok("Meme erfolgreich hinzugefügt");
     }
 
+    @GetMapping("/allpictures")
+    public ResponseEntity<List<Picture>> getAllPictures(){
+        return ResponseEntity.ok(this.pictureService.gibAllePicture());
+    }
+
     @GetMapping("/pictures/random1")
     public ResponseEntity<Picture> getRandomPicture() throws PictureNotFound {
         return ResponseEntity.ok(this.pictureService.gibRandomPicture());
@@ -59,6 +72,23 @@ public class MemeRestController {
     @GetMapping("/pictures/{id}")
     public ResponseEntity<Picture> getPictureByID(@PathVariable Long id) throws PictureNotFound {
         return ResponseEntity.ok(this.pictureService.gibPictureMitId(id));
+    }
+
+    @PutMapping("/pictures")
+    public HttpStatus updatePicture(@Valid @RequestBody Picture picture, BindingResult bindingResult) throws FormValidierungFehlgeschlagen, PictureNotFound {
+        FormValildierungExceptionDTO formValildierungExceptionDTO = new FormValildierungExceptionDTO("1000");
+        if (picture.getId() == null)
+            throw new PictureNotFound();
+
+        if (bindingResult.hasErrors()) {
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                formValildierungExceptionDTO.addFormValidationError(((FieldError) error).getField(), error.getDefaultMessage());
+            }
+            throw new FormValidierungFehlgeschlagen(formValildierungExceptionDTO);
+        } else {
+            this.pictureService.aktualisierePicture(picture);
+            return HttpStatus.OK;
+        }
     }
 
     @GetMapping("/quotes/random4")
