@@ -23,6 +23,7 @@
                     <p class="card-text">Likes: <strong th:text="${meme.likes}"></strong></p>
                     <p class="card-text" th:text="${meme.date}"></p>
                     <a th:href="@{/web/addlike/{id}(id=${meme.id})}" class="btn btn-primary">Liken</a>
+                    <a th:href="@{/web/deletememe/{id}(id=${meme.id})}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>

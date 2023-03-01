@@ -10,21 +10,26 @@
 <body>
 <div class="container-fluid">
 
+    <form th:action="@{/web/addmeme}" th:object="${meme}" method="post" >
     <div class="text-center">
         <div class="card mx-auto" style="width: 18rem;">
-            <img th:src="@{${picture.url}}" class="card-img-top" style="width: auto; height: 300px;object-fit: cover">
+            <img th:src="@{${picture.url}}" th:field="*{picture}" th:value="picture" class="card-img-top" style="width: auto; height: 300px;object-fit: cover">
+            <p th:if="${#fields.hasErrors('picture')}" th:errorclass="errors" th:errors="*{picture}"/>
         </div>
     <h1>Choose a Quote to the Picture</h1>
-    <form th:action="@{/web/addmeme}" method="post" th:object="${newmeme}">
+
         <div class="form-group">
             <select class="custom-select" multiple>
-                <option th:each="quote : ${quotes}" th:text="${quote.text}" th:value=""></option>
+                <option th:each="quote : ${quotes}" th:text="${quote.text}" th:value="quote" th:field="*{quote}"></option>
             </select>
+            <p th:if="${#fields.hasErrors('quote')}" th:errorclass="errors" th:errors="*{quote}"/>
         </div>
         <button type="submit" class="btn btn-success">Add Quote to Picture</button>
-    </form>
     </div>
-
+    </form>
+    <p th:if="${#fields.hasErrors('meme')}" th:errorclass="errors" th:errors="*{meme}"/>
 </div>
+
+
 </body>
 </html>
