@@ -20,6 +20,7 @@
                 <div class="card-body">
                     <p class="card-text" >Kategorie <strong th:text="${picture.kategorie}"></strong> </p>
                     <a th:href="@{/web/changepicture/{id}(id=${picture.id})}" class="btn btn-info">Change</a>
+                    <a th:href="@{/web/deletepicture/{id}(id=${picture.id})}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>

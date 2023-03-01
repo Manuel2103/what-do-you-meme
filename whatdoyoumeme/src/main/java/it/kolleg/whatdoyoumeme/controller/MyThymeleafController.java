@@ -71,6 +71,15 @@ public class MyThymeleafController {
         modelAndView.addObject("meme", new Meme());
         return modelAndView;
     }
+    @PostMapping("web/addmeme")
+    public String addMeme(@Valid @ModelAttribute("meme") Meme meme, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "addmeme";
+        }else{
+            memeService.speichereMeme(meme);
+            return "redirect:/web/allmemes";
+        }
+    }
     @GetMapping("web/addpicture")
     public ModelAndView addPictureForm(){
         return new ModelAndView("addpicture", "picture", new Picture());
@@ -97,18 +106,13 @@ public class MyThymeleafController {
             pictureService.aktualisierePicture(picture);
             return "redirect:/web/allpictures";
         }
-
-
+    }
+    @GetMapping("web/deletepicture/{id}")
+    public View deletePicture(@PathVariable long id) throws PictureNotFound {
+        pictureService.loeschePictureMitId(id);
+        return new RedirectView("/web/allpictures");
     }
 
-    @PostMapping("web/addmeme")
-    public String addMeme(@Valid @ModelAttribute("meme") Meme meme, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return "addmeme";
-        }else{
-            memeService.speichereMeme(meme);
-            return "redirect:/web/allmemes";
-        }
-    }
+
 
 }
