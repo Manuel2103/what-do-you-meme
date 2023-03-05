@@ -13,15 +13,13 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MyThymeleafController {
@@ -67,13 +65,18 @@ public class MyThymeleafController {
         Picture randomPicture = pictureService.gibRandomPicture();
         ModelAndView modelAndView = new ModelAndView("addmeme");
         modelAndView.addObject("quotes", randomQuotes);
-        modelAndView.addObject("picture", randomPicture);
+        modelAndView.addObject("randomPicture", randomPicture);
         modelAndView.addObject("meme", new Meme());
+        System.out.println(modelAndView);
         return modelAndView;
     }
     @PostMapping("web/addmeme")
-    public String addMeme(@Valid @ModelAttribute("meme") Meme meme, BindingResult bindingResult){
+    public String addMeme(@Valid @ModelAttribute("meme") Meme meme, BindingResult bindingResult, @RequestParam Map<String, String> picturequote) throws QuoteNotFound, PictureNotFound {
+        //System.out.println(picturequote.toString());
+        meme.setPicture(pictureService.gibPictureMitId(Long.valueOf(picturequote.get("randomPicture"))));
+        meme.setQuote(quoteService.gibQuoteMitID(Long.valueOf(picturequote.get("randomQuote"))));
         if(bindingResult.hasErrors()){
+            System.out.println(bindingResult.getFieldError().toString());
             return "addmeme";
         }else{
             memeService.speichereMeme(meme);
