@@ -10,6 +10,7 @@ import it.kolleg.whatdoyoumeme.services.MemeService;
 import it.kolleg.whatdoyoumeme.services.PictureService;
 import it.kolleg.whatdoyoumeme.services.QuoteService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -36,7 +37,7 @@ public class MemeRestController {
     }
 
     @GetMapping("/kategories")
-    public ResponseEntity<List<Kategorie>> days() {
+    public ResponseEntity<List<Kategorie>> kategories() {
         return new ResponseEntity<List<Kategorie>>(Arrays.asList(Kategorie.values()), HttpStatus.OK);
     }
 
@@ -57,6 +58,11 @@ public class MemeRestController {
 
             this.memeService.speichereMeme(new Meme(this.pictureService.gibPictureMitId(pid),this.quoteService.gibQuoteMitID(qid)));
             return ResponseEntity.ok("Meme erfolgreich hinzugefügt");
+    }
+
+    @GetMapping("/meme/like/{id}")
+    public void addLikeToMeme(@PathVariable Long id) throws MemeNotFound {
+        this.memeService.setzeLike(id);
     }
 
     @GetMapping("/allpictures")
@@ -91,6 +97,10 @@ public class MemeRestController {
         }
     }
 
+    @GetMapping("/allquotes")
+    public ResponseEntity<List<Quote>> getAllQuotes(){
+        return ResponseEntity.ok(this.quoteService.alleQuotes());
+    }
     @GetMapping("/quotes/random4")
     public ResponseEntity<List<Quote>> get4RandomQuotes() throws QuoteNotFound {
         return ResponseEntity.ok(this.quoteService.gib4RandomQuotes());
@@ -101,10 +111,19 @@ public class MemeRestController {
         return ResponseEntity.ok(this.quoteService.gibQuoteMitID(id));
     }
 
-    @GetMapping("/meme/like/{id}")
-    public void addLikeToMeme(@PathVariable Long id) throws MemeNotFound {
-        this.memeService.setzeLike(id);
+    @DeleteMapping("/deletequote/{id}")
+    public HttpStatus deleteQuoteById(@PathVariable Long id) throws QuoteNotFound {
+        try {
+            this.quoteService.loescheQuote(id);
+            return HttpStatus.OK;
+        } catch (QuoteNotFound quoteNotFound){
+            return HttpStatus.NOT_FOUND;
+        } catch (Exception e){
+            return HttpStatus.NOT_ACCEPTABLE;
+        }
     }
+
+
 
 
 

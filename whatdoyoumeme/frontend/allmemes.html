@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="jquery-3.6.3.min.js"></script>
     <title>What Do You Meme?</title>
 </head>
 
@@ -63,7 +64,8 @@
 
             let likes = document.createElement("button");
             likes.addEventListener("click", function like() { addLike(meme.id); });
-            likes.innerHTML = "Like: " + meme.likes;
+            likes.innerHTML = meme.likes;
+            likes.setAttribute("id", "like");
             likes.classList.add('btn', 'btn-secondary');
             //action.innerHTML = `<a href="updateMeme.html?id=${quote.id}&name=${student.name}&plz=${student.plz}" class="btn btn-primary" role="button">bearbeiten</a> <button type="button" class="btn btn-warning" onclick="deleteStudent(${student.id})">löschen</button>`
 
@@ -87,7 +89,8 @@
         })
             .then(response => console.log(response.status));
 
-            
+            console.log(document.getElementById('like').value);
+
     }
 
 

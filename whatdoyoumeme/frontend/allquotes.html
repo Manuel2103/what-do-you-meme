@@ -1,12 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="jquery-3.6.3.min.js"></script>
+    <title>All Quotes</title>
 </head>
+
 <body>
-    <div class="container"></div>
+    <div class="container">
+        <h1>Alle Quotes</h1>
+        <hr class="border-2 border-top border-primary">
+        <a href="allpictures.html" class="btn btn-primary" role="button">alle Pictures</a>
+        <a href="allmemes.html" class="btn btn-primary" role="button">alle Memes</a>
+        <a href="home.html" class="btn btn-primary" role="button">What do you Meme?</a>
+        <hr class="border-2 border-top border-primary">
+        <div id="memequotes" class="row">
+
+        </div>
+    </div>
 </body>
+<script>
+
+    getAllQuotes();
+
+    async function getAllQuotes() {
+        let response = await fetch('http://localhost:8080/api/whatdoyoumeme/allquotes',
+            {
+                method: 'GET',
+                cache: 'no-cache',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }
+        );
+        let data = await response.json();
+
+        var memequotes = document.getElementById('memequotes');
+
+        data.forEach((quote) => {
+            let col = document.createElement('div');
+            col.classList.add('col-3', 'm-2');
+
+            let carddiv = document.createElement("div");
+            carddiv.classList.add('card', 'bg-primary');
+            carddiv.style = 'width: 18rem';
+
+            let cardbody = document.createElement("div");
+            cardbody.classList.add('card-body');
+
+            let text = document.createElement("p");
+            text.classList.add('card-text', 'text-white');
+            text.appendChild(document.createTextNode(quote.text));
+
+            let editbtn = document.createElement("button");
+            editbtn.classList.add('btn', 'btn-info');
+            editbtn.innerHTML = `<a href="updatequotes.html?id=${quote.id}&text=${quote.text}" role="button">bearbeiten</a>`;
+
+            let deletebtn = document.createElement("button");
+            deletebtn.classList.add('btn', 'btn-warning', 'm-1');
+            deletebtn.addEventListener("click", function deleting() { deleteQuote(quote.id); });
+            deletebtn.innerHTML = 'löschen';
+
+            //versteckte ID, damit sie für die Bearbeitung als GET-Parameter mitgeschickt werden kann
+            let qid = document.createElement("p");
+            qid.setAttribute("id", "qid");
+            qid.innerHTML = quote.id;
+            qid.hidden = true;
+
+
+            memequotes.appendChild(col);
+            col.appendChild(carddiv);
+            carddiv.appendChild(cardbody);
+            cardbody.appendChild(text);
+            cardbody.appendChild(editbtn);
+            cardbody.appendChild(deletebtn);
+            cardbody.appendChild(qid);
+
+        })
+    }
+
+    async function deleteQuote(id) {
+        let response = await fetch('http://localhost:8080/api/whatdoyoumeme/deletequote/' + id,
+            {
+                method: 'DELETE',
+                cache: 'no-cache',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }
+        );
+        let data = await response.json();
+        console.log(data);
+        if (data == 'OK') {
+            alert("Löschen erfolgreich");
+            document.location.reload();
+        } else if (data == 'NOT_FOUND') {
+            alert("Löschen nicht erfolgreich!");
+        } 
+    }
+
+</script>
+
 </html>
