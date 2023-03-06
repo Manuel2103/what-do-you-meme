@@ -11,13 +11,21 @@
 
 <body>
     <div class="container">
-        <div class="text-center">
-            <div id="memepicture"></div>
-            <h2 class="m-4">Choose a quote to the picture</h2>
+        <div class="row m-2">
+            <div class="col-12">
+                <a href="allpictures.html" class="btn btn-primary" role="button">alle Pictures</a>
+                <a href="allquotes.html" class="btn btn-primary" role="button">alle Quotes</a>
+                <a href="allmemes.html" class="btn btn-primary" role="button">alle Memes</a>
+            </div>
+            <div class="row">
+                <div class="text-center">
+                    <div id="memepicture"></div>
+                    <h2 class="m-4">Choose a quote to the picture</h2>
+                </div>
+            </div>
             <div id="memequotes" class="row"></div>
         </div>
-    </div>
-    
+
 
 
 </body>
@@ -41,34 +49,35 @@
         var memequotes = document.getElementById('memequotes');
 
         data.forEach((randomquote) => {
-                let col = document.createElement('div');
-                col.classList.add('col', 'm-1');
+            let col = document.createElement('div');
+            col.classList.add('col-3');
 
-                let carddiv = document.createElement("div");
-                carddiv.classList.add('card','bg-primary');
-                carddiv.style = 'width: 18rem';
+            let carddiv = document.createElement("div");
+            carddiv.classList.add('card', 'bg-primary');
+            carddiv.style = 'width: 18rem';
 
-                let cardbody = document.createElement("div");
-                cardbody.classList.add('card-body', 'text-white');
+            let cardbody = document.createElement("div");
+            cardbody.classList.add('card-body', 'text-white');
 
-                let quote = document.createElement("p");
-                quote.classList.add('card-text');
-                quote.appendChild(document.createTextNode(randomquote.text));
+            let quote = document.createElement("p");
+            quote.classList.add('card-text');
+            quote.appendChild(document.createTextNode(randomquote.text));
 
-                let likes = document.createElement("button");
-                likes.addEventListener("click", function match() { matching(randomquote.id); });
-                likes.innerHTML = "Add me!";
-                likes.classList.add('btn', 'btn-light');
+            let likes = document.createElement("button");
+            let pid = document.getElementById("pid").innerHTML;
+            likes.addEventListener("click", function match() { matching(randomquote.id, pid); });
+            likes.innerHTML = "Add me!";
+            likes.classList.add('btn', 'btn-light');
 
-                memequotes.appendChild(col);
-                col.appendChild(carddiv);
-                carddiv.appendChild(cardbody);
-                cardbody.appendChild(quote);
-                cardbody.appendChild(likes);
+            memequotes.appendChild(col);
+            col.appendChild(carddiv);
+            carddiv.appendChild(cardbody);
+            cardbody.appendChild(quote);
+            cardbody.appendChild(likes);
 
         })
 
-        
+
     }
 
     async function getRandomPicture() {
@@ -89,9 +98,9 @@
                 picture.style.height = "300px"
 
                 let pid = document.createElement("p");
-                pid.setAttribute("id","pid");
+                pid.setAttribute("id", "pid");
                 pid.innerHTML = randompic.id;
-                pid.hidden=true;
+                pid.hidden = true;
 
                 memepicture.appendChild(col);
                 col.appendChild(picture);
@@ -100,13 +109,11 @@
             })
     }
 
-    function matching(id){
-        alert("Match!");
-        fetch('http://localhost:8080/api/whatdoyoumeme/meme/like/'+id, {
+    async function matching(qid, pid) {
+        fetch('http://localhost:8080/api/whatdoyoumeme/memes/' + pid + '/' + qid, {
             method: 'GET'
         })
-            .then(response => console.log(response.status))
-            
+            .then(response => response.status == 200 ? document.location.reload() : console.log(response.status));
     }
 </script>
 

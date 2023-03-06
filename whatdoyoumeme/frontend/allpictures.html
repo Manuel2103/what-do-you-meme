@@ -1,34 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="bootstrap.min.css">
-    <title>Document</title>
+    <title>Alle Pictures</title>
 </head>
+
 <body>
-    
+    <div class="container">
+        <h1>Alle Pictures</h1>
+        <hr class="border-2 border-top border-primary">
+        <a href="allmemes.html" class="btn btn-primary" role="button">alle Memes</a>
+        <a href="allquotes.html" class="btn btn-primary" role="button">alle Quotes</a>
+        <a href="home.html" class="btn btn-primary" role="button">What do you Meme?</a>
+        <hr class="border-2 border-top border-primary">
+        <div id="piccards" class="row">
+            <!--cards-->
+        </div>
+    </div>
 </body>
+
 </html>
 
 
 <script>
 
-getAllPictures();
+    getAllPictures();
 
-async function getAllPictures() {
-    let response = await fetch('http://localhost:8080/api/whatdoyoumeme/allmemes',
-    {
-        method : 'GET',
-        cache : 'no-cache',
-        headers: {
-            'Accept':'application/json'
-        }
+    async function getAllPictures() {
+        let response = await fetch('http://localhost:8080/api/whatdoyoumeme/allpictures',
+            {
+                method: 'GET',
+                cache: 'no-cache',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }
+        );
+        let data = await response.json();
+        var piccards = document.getElementById('piccards');
+
+        data.forEach((pic) => {
+            let col = document.createElement('div');
+            col.classList.add('col', 'm-1')
+
+            let carddiv = document.createElement("div");
+            carddiv.classList.add('card');
+            carddiv.style = 'width: 18rem';
+
+            let picture = document.createElement("img");
+            picture.src = pic.url;
+            picture.classList.add('card-img-top');
+
+            let cardbody = document.createElement("div");
+            cardbody.classList.add('card-body');
+
+            let name = document.createElement("p");
+            name.innerHTML = "Name: " + pic.name;
+
+
+            let kategorie = document.createElement("p");
+            kategorie.innerHTML = "Kategorie: " + pic.kategorie;
+
+            let edit = document.createElement("button");
+            //edit.addEventListener("click", function like() { addLike(pic.id); });
+            //edit.innerHTML = "Edit: ";
+            edit.classList.add('btn', 'btn-secondary');
+            edit.innerHTML = `<a href="updatepicture.html?id=${pic.id}&name=${pic.name}&url=${pic.url}&kat=${pic.kategorie}" class="text-white" role="button">bearbeiten</a>`
+
+            //versteckte PictureID, damit sie für die Bearbeitung als GET-Parameter mitgeschickt werden kann
+            let pid = document.createElement("p");
+            pid.setAttribute("id", "pid");
+            pid.innerHTML = pic.id;
+            pid.hidden = true;
+
+            piccards.appendChild(col);
+            col.appendChild(carddiv);
+            carddiv.appendChild(picture);
+            carddiv.appendChild(cardbody);
+            cardbody.appendChild(name);
+            cardbody.appendChild(kategorie);
+            cardbody.appendChild(edit);
+            cardbody.appendChild(pid);
+
+        })
+
     }
-    );
-    let data = await response.json();
-    
-    
-}
 </script>

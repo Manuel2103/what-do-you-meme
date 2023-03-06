@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Picture {
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @NotNull
     private String url;
