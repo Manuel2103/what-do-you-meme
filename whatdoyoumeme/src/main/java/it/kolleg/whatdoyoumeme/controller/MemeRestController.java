@@ -10,7 +10,6 @@ import it.kolleg.whatdoyoumeme.services.MemeService;
 import it.kolleg.whatdoyoumeme.services.PictureService;
 import it.kolleg.whatdoyoumeme.services.QuoteService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -111,20 +110,31 @@ public class MemeRestController {
         return ResponseEntity.ok(this.quoteService.gibQuoteMitID(id));
     }
 
+    @PostMapping("/addquote")
+    public HttpStatus addQuote(@Valid @RequestBody Quote quote, BindingResult bindingResult) throws FormValidierungFehlgeschlagen {
+        FormValildierungExceptionDTO formValildierungExceptionDTO = new FormValildierungExceptionDTO("1000");
+
+        if (bindingResult.hasErrors()) {
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                formValildierungExceptionDTO.addFormValidationError(((FieldError) error).getField(), error.getDefaultMessage());
+            }
+            throw new FormValidierungFehlgeschlagen(formValildierungExceptionDTO);
+        } else {
+            this.quoteService.speichereQuote(quote);
+            return HttpStatus.OK;
+        }
+
+    }
+
     @DeleteMapping("/deletequote/{id}")
     public HttpStatus deleteQuoteById(@PathVariable Long id) throws QuoteNotFound {
         try {
             this.quoteService.loescheQuote(id);
             return HttpStatus.OK;
-        } catch (QuoteNotFound quoteNotFound){
-            return HttpStatus.NOT_FOUND;
-        } catch (Exception e){
+        } catch (QuoteNotFound quoteNotFound) {
             return HttpStatus.NOT_ACCEPTABLE;
         }
+
+
     }
-
-
-
-
-
 }

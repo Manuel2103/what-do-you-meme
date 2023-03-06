@@ -136,7 +136,11 @@
             } else {
                 $('#nameError').html('')
                 $('#katError').html('')
-                $('#inputresponse').html("Aktualisierung erfolgreich")
+                $('#inputresponse').html("Aktualisierung erfolgreich! Sie werden umgeleitet...")
+
+                setTimeout(function () {
+                    window.location.href = "allpictures.html";
+                }, 3000);
             }
 
         } catch (error) {
