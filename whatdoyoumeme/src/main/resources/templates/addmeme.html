@@ -9,22 +9,30 @@
 </head>
 <body>
 <div class="container-fluid">
-
     <div class="text-center">
-        <div class="card mx-auto" style="width: 18rem;">
-            <img th:src="@{${picture.url}}" class="card-img-top" style="width: auto; height: 300px;object-fit: cover">
-        </div>
-    <h1>Choose a Quote to the Picture</h1>
-    <form th:action="@{/web/addmeme}" method="post" th:object="${newmeme}">
-        <div class="form-group">
-            <select class="custom-select" multiple>
-                <option th:each="quote : ${quotes}" th:text="${quote.text}" th:value=""></option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-success">Add Quote to Picture</button>
-    </form>
-    </div>
 
+        <form th:action="@{/web/addmeme}" th:object="${meme}" method="post">
+
+            <div class="card mx-auto" style="width: 18rem;">
+               <img th:src="@{${randomPicture.url}}" class="card-img-top" style="width: auto; height: 300px;object-fit: cover">
+                <input th:name="randomPicture" th:value="${randomPicture.id}" hidden>
+                <p th:if="${#fields.hasErrors('picture')}" th:errorclass="error" th:errors="*{picture}"></p>
+            </div>
+
+            <h1>Choose a Quote to the Picture</h1>
+            <div class="form-group">
+                <select th:name="randomQuote" class="custom-select" multiple>
+                    <option th:each="randomQuote : ${quotes}" th:text="${randomQuote.text}"  th:value="${randomQuote.id}"></option>
+                </select>
+                <p th:if="${#fields.hasErrors('quote')}" th:errorclass="error" th:errors="*{quote}"></p>
+            </div>
+            <button type="submit" class="btn btn-success">Add Quote to Picture</button>
+            <a th:href="@{/web/allmemes}" class="btn btn-danger">Cancel</a>
+
+        </form>
+    </div>
 </div>
+
+
 </body>
 </html>

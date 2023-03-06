@@ -11,11 +11,17 @@
 <div class="container-fluid ">
     <h1>All Quotes</h1>
 
+    <a th:href="@{/web/addquote}" class="btn btn-info">Add Quote</a>
+    <a th:href="@{/web/allmemes}" class="btn btn-secondary">Back</a>
     <table class="table">
         <th:block th:each="quote : ${quotes}">
             <tr>
                 <td th:text="${quote.id}"></td>
                 <td th:text="${quote.text}"></td>
+                <td><a th:href="@{/web/updatequote/{id}(id=${quote.id})}" class="btn btn-info">Change</a></td>
+                <td><a th:href="@{/web/deletequote/{id}(id=${quote.id})}" class="btn btn-danger">Delete</a></td>
+
+
             </tr>
 
         </th:block>

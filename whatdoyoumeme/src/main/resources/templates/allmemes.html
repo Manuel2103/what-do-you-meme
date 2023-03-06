@@ -13,6 +13,8 @@
     <h1>All Memes</h1>
 
     <a th:href="@{/web/addmeme}" class="btn btn-info">Play</a>
+    <a th:href="@{/web/allpictures}" class="btn btn-info">All Pictures</a>
+    <a th:href="@{/web/allquotes}" class="btn btn-info">All Quotes</a>
     <br>
     <div class="row">
         <div class="col-md-2 d-flex align-items-stretch" th:each="meme : ${memes}">
@@ -23,6 +25,7 @@
                     <p class="card-text">Likes: <strong th:text="${meme.likes}"></strong></p>
                     <p class="card-text" th:text="${meme.date}"></p>
                     <a th:href="@{/web/addlike/{id}(id=${meme.id})}" class="btn btn-primary">Liken</a>
+                    <a th:href="@{/web/deletememe/{id}(id=${meme.id})}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Pictures</title>
@@ -9,18 +11,21 @@
 
 <div class="container-fluid ">
     <h1>All Pictures</h1>
-       <div class="row">
+    <a th:href="@{/web/addpicture}" class="btn btn-primary">Add Picture</a>
+    <a th:href="@{/web/allmemes}" class="btn btn-secondary">Back</a>
+    <div class="row">
         <div class="col-md-2 d-flex align-items-stretch" th:each="picture : ${pictures}">
             <div class="card">
                 <img th:src="@{${picture.url}}" class="card-img-top" style="width: 100%;height: 15vw; object-fit: cover;"
                      th:alt="${picture.name}">
                 <div class="card-body">
                     <p class="card-text" >Kategorie <strong th:text="${picture.kategorie}"></strong> </p>
+                    <a th:href="@{/web/changepicture/{id}(id=${picture.id})}" class="btn btn-info">Change</a>
+                    <a th:href="@{/web/deletepicture/{id}(id=${picture.id})}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 </body>
 </html>

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import java.sql.Date;
 
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class Meme {
@@ -36,5 +35,12 @@ public class Meme {
         this.quote = quote;
         this.date = new java.sql.Date(System.currentTimeMillis());
         this.likes = 0;
+
+    }
+    public Meme(){
+
+        this.date = new java.sql.Date(System.currentTimeMillis());
+        this.likes = 0;
+
     }
 }
