@@ -14,9 +14,9 @@
     <a th:href="@{/web/addpicture}" class="btn btn-primary">Add Picture</a>
     <a th:href="@{/web/allmemes}" class="btn btn-secondary">Back</a>
     <div class="row">
-        <div class="col-md-2 d-flex align-items-stretch" th:each="picture : ${pictures}">
+        <div class="col-md-2 d-flex align-items-stretch mb-3" th:each="picture : ${pictures}">
             <div class="card">
-                <img th:src="@{${picture.url}}" class="card-img-top" style="width: 100%;height: 15vw; object-fit: cover;"
+                <img th:src="@{${picture.url}}" class="card-img-top" style="height: 15vw; object-fit: cover;"
                      th:alt="${picture.name}">
                 <div class="card-body">
                     <p class="card-text" >Kategorie <strong th:text="${picture.kategorie}"></strong> </p>

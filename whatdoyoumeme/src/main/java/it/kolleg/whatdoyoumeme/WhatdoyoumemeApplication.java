@@ -47,17 +47,19 @@ public class WhatdoyoumemeApplication implements ApplicationRunner {
         dbZugriffQuote.addQuote(new Quote("When you dip you biscuit in your cuppa and it breaks off"));
         dbZugriffQuote.addQuote(new Quote("When they come back from the bathroom and see that their phone is disabled for 196 hours"));
 
-        Picture picture1 = new Picture("https://api.memegen.link/images/ackbar.png", "Ackbar", Kategorie.ANIMALS);
-        Picture picture2 = new Picture("https://api.memegen.link/images/afraid.png", "Afraid", Kategorie.ANIMALS);
-        Picture picture3 = new Picture("https://api.memegen.link/images/agnes.png", "Agnes", Kategorie.ANIMALS);
+        Picture picture1 = new Picture("https://api.memegen.link/images/ackbar.png", "Ackbar", Kategorie.SERIES);
+        Picture picture2 = new Picture("https://api.memegen.link/images/afraid.png", "Afraid", Kategorie.HUMANS);
+        Picture picture3 = new Picture("https://api.memegen.link/images/agnes.png", "Agnes", Kategorie.HUMANS);
 
         dbZugriffPicture.addPicture(picture1);
         dbZugriffPicture.addPicture(picture2);
         dbZugriffPicture.addPicture(picture3);
-        dbZugriffPicture.addPicture(new Picture("https://api.memegen.link/images/bihw.png", "Bihw", Kategorie.ANIMALS));
-        dbZugriffPicture.addPicture(new Picture("https://api.memegen.link/images/cmm.png", "change my mind", Kategorie.ANIMALS));
-        dbZugriffPicture.addPicture(new Picture("https://api.memegen.link/images/disastergirl.png", "disaster girl", Kategorie.ANIMALS));
-        dbZugriffPicture.addPicture(new Picture("https://api.memegen.link/images/ive.png", "Ive", Kategorie.ANIMALS));
+        dbZugriffPicture.addPicture(new Picture("https://api.memegen.link/images/bihw.png", "Bihw", Kategorie.HUMANS));
+        dbZugriffPicture.addPicture(new Picture("https://api.memegen.link/images/cmm.png", "change my mind", Kategorie.POLITICS));
+        dbZugriffPicture.addPicture(new Picture("https://api.memegen.link/images/disastergirl.png", "disaster girl", Kategorie.MASHUP));
+        dbZugriffPicture.addPicture(new Picture("https://api.memegen.link/images/ive.png", "Ive", Kategorie.HUMANS));
+        dbZugriffPicture.addPicture(new Picture("https://api.memegen.link/images/grumpycat.png", "Grumpycat", Kategorie.ANIMALS));
+        dbZugriffPicture.addPicture(new Picture("https://api.memegen.link/images/woman-cat.png", "woman-cat", Kategorie.MASHUP));
 
         dbZugriffMeme.addMeme(new Meme(Date.valueOf("2023-01-22"), 2, picture2, quote1));
         dbZugriffMeme.addMeme(new Meme(Date.valueOf("2022-12-28"), 3, picture1, quote3));

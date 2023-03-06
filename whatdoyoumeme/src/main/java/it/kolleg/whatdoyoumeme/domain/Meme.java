@@ -15,7 +15,7 @@ import java.sql.Date;
 public class Meme {
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
     @NotNull
     private Date date;
     private long likes;

@@ -62,10 +62,26 @@ public class DbZugriffJPAQuoteH2 implements DbZugriffQuote {
         Optional<Quote> optionalQuote;
         List<Quote> quoteList = new ArrayList<>();
         try {
-            for (int i = 0; i < 4; i++) {
+            int i = 0;
+            ArrayList<Long> quotelistids = new ArrayList<>();
+            boolean ispresent;
+            while (i<4){
+                ispresent = false;
                 randomID = random.nextLong(1, countquotes+1);
-                optionalQuote = this.quoteJPARepo.findById(randomID);
-                quoteList.add(optionalQuote.get());
+                for(Long quotelistid:quotelistids){
+                    if(randomID==quotelistid){
+                        ispresent = true;
+                    }
+                }
+                if(!ispresent){
+                    optionalQuote = this.quoteJPARepo.findById(randomID);
+                    if(optionalQuote.isPresent()){
+                        quoteList.add(optionalQuote.get());
+                        quotelistids.add(optionalQuote.get().getId());
+                        i++;
+                    }
+                }
+
             }
             return quoteList;
         }catch (Exception e){
