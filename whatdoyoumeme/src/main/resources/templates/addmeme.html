@@ -27,7 +27,9 @@
                 <p th:if="${#fields.hasErrors('quote')}" th:errorclass="error" th:errors="*{quote}"></p>
             </div>
             <button type="submit" class="btn btn-success">Add Quote to Picture</button>
-    </form>
+            <a th:href="@{/web/allmemes}" class="btn btn-danger">Cancel</a>
+
+        </form>
     </div>
 </div>
 

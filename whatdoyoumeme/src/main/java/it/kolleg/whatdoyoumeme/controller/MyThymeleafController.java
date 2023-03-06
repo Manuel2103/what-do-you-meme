@@ -67,7 +67,6 @@ public class MyThymeleafController {
         modelAndView.addObject("quotes", randomQuotes);
         modelAndView.addObject("randomPicture", randomPicture);
         modelAndView.addObject("meme", new Meme());
-        System.out.println(modelAndView);
         return modelAndView;
     }
     @PostMapping("web/addmeme")
@@ -115,6 +114,42 @@ public class MyThymeleafController {
         pictureService.loeschePictureMitId(id);
         return new RedirectView("/web/allpictures");
     }
+
+    @GetMapping("web/addquote")
+    public ModelAndView addQuoteForm(){
+        return new ModelAndView("addquote", "quote",new Quote());
+    }
+
+    @PostMapping("web/addquote")
+    public String addQuote(@Valid @ModelAttribute("quote") Quote quote, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "addquote";
+        }else{
+            quoteService.speichereQuote(quote);
+            return "redirect:/web/allquotes";
+        }
+    }
+    @GetMapping("web/updatequote/{id}")
+    public ModelAndView updateQuoteForm(@PathVariable long id) throws QuoteNotFound {
+        return new ModelAndView("updatequote", "quote", quoteService.gibQuoteMitID(id));
+    }
+
+    @PostMapping("web/updatequote")
+    public String updateQuote(@Valid @ModelAttribute("quote") Quote quote, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "updatequote";
+        }else {
+            quoteService.aktualisiereQuote(quote);
+            return "redirect:/web/allquotes";
+        }
+    }
+    @GetMapping("web/deletequote/{id}")
+    public String deleteQuote(@PathVariable long id) throws QuoteNotFound {
+        quoteService.loescheQuote(id);
+        return "redirect:/web/allquotes";
+    }
+
+
 
 
 

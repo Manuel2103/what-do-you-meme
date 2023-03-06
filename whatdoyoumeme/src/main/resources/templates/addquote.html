@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Quote</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container-fluid">
+  <form action="" method="post" th:action="@{/web/addquote}" th:object="${quote}">
+    <div class="form-group">
+      <label for="text">Text</label>
+      <input type="text" class="form-control" id="text" placeholder="Enter Text" th:field="*{text}" >
+      <p th:if="${#fields.hasErrors('text')}" th:errorclass="error" th:errors="*{text}"/>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a th:href="@{/web/allquotes}" class="btn btn-danger">Cancel</a>
+  </form>
+
+</div>
+
+</body>
+</html>
