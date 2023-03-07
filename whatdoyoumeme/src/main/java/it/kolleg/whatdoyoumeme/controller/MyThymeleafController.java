@@ -21,44 +21,87 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * In der Klasse MyThymeleafController werden die verschiedenen Mappings für die einzelnen Services bereitgestellt
+ * Es werden verschiedene Service verwendet, um die Funktionen realisieren zu können.
+ */
 @Controller
 public class MyThymeleafController {
     QuoteService quoteService;
     MemeService memeService;
     PictureService pictureService;
 
+    /**
+     * Konstruktor des Controllers
+     * @param quoteService Service für Funktionen von Quote
+     * @param memeService Service für Funktionen von Meme
+     * @param pictureService Service für Funktionen von Picture
+     */
     public MyThymeleafController(QuoteService quoteService, MemeService memeService, PictureService pictureService) {
         this.quoteService = quoteService;
         this.memeService = memeService;
         this.pictureService = pictureService;
     }
 
+    /**
+     * allQuotes gibt alle Quotes zurück.
+     * @return ModelAndView mit viewName allquotes und modelName quotes
+     */
     @GetMapping("web/allquotes")
     public ModelAndView allQuotes(){
         List<Quote> quoteList = quoteService.alleQuotes();
         return new ModelAndView("allquotes", "quotes", quoteList);
     }
+
+    /**
+     * allMemes gibt alle Memes zurück
+     * @return ModelAndView mit viewName allmemes und modelName memes
+     */
     @GetMapping("web/allmemes")
     public ModelAndView allMemes(){
         List<Meme> memeList = memeService.gibAlleMemes();
         return new ModelAndView("allmemes", "memes", memeList);
     }
 
+    /**
+     * Fügt einen Like zu dem bestimmten Meme hinzu
+     * @param id ID des Memes
+     * @return Redirect auf alle Memes
+     */
     @GetMapping("web/addlike/{id}")
     public View addLike(@PathVariable long id){
         memeService.setzeLike(id);
         return new RedirectView("/web/allmemes");
     }
+
+    /**
+     * Lösche ein Meme mit ID
+     * @param id ID des Memes
+     * @return RedirectView zu allen Memes
+     * @throws MemeNotFound
+     */
     @GetMapping("web/deletememe/{id}")
     public View deleteMeme(@PathVariable long id) throws MemeNotFound {
         memeService.loescheMemeMitID(id);
         return new RedirectView("/web/allmemes");
     }
+
+    /**
+     * Gibt alle Bilder zurück
+     * @return allpictures View und Model pictures
+     */
     @GetMapping("web/allpictures")
     public ModelAndView allPictures(){
         List<Picture> pictures = pictureService.gibAllePicture();
         return new ModelAndView("allpictures", "pictures", pictures);
     }
+
+    /**
+     * Gibt das Formular für das Hinzufügen von memes
+     * @return View addmeme mit Models quotes, randomPicture, meme
+     * @throws QuoteNotFound
+     * @throws PictureNotFound
+     */
     @GetMapping("web/addmeme")
     public ModelAndView addMemeForm() throws QuoteNotFound, PictureNotFound {
         List<Quote> randomQuotes = quoteService.gib4RandomQuotes();
@@ -69,13 +112,21 @@ public class MyThymeleafController {
         modelAndView.addObject("meme", new Meme());
         return modelAndView;
     }
+
+    /**
+     * Fügt ein Meme hinzu
+     * @param meme Das gemappte Meme
+     * @param bindingResult Beinhaltet die Ergebnisse der Validierung
+     * @param picturequote
+     * @return Redirect zu allen Memes
+     * @throws QuoteNotFound
+     * @throws PictureNotFound
+     */
     @PostMapping("web/addmeme")
     public String addMeme(@Valid @ModelAttribute("meme") Meme meme, BindingResult bindingResult, @RequestParam Map<String, String> picturequote) throws QuoteNotFound, PictureNotFound {
-        //System.out.println(picturequote.toString());
         meme.setPicture(pictureService.gibPictureMitId(Long.valueOf(picturequote.get("randomPicture"))));
         meme.setQuote(quoteService.gibQuoteMitID(Long.valueOf(picturequote.get("randomQuote"))));
         if(bindingResult.hasErrors()){
-            System.out.println(bindingResult.getFieldError().toString());
             return "addmeme";
         }else{
             memeService.speichereMeme(meme);

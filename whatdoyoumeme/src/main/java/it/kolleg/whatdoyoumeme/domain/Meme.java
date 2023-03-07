@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
+/**
+ * Die Domain Klasse Meme beinhaltet die ID, das Datum, die Likes und das dazugehörige Bild und Zitat.
+ */
 @Entity
 @AllArgsConstructor
 @Data
