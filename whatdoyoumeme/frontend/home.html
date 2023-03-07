@@ -31,10 +31,16 @@
 </body>
 <script>
 
+    //Bei Seitenaufruf werden diese zwei Funktionen sofort ausgeführt
     getRandomPicture();
     getRandomQuotes();
 
+    /**
+     * Für das Spiel werden 4 zufällig gewählte Quotes benötigt. 
+     * Von der REST-API angefragt und dynamisch in das DOM eingefügt.
+     * */
     async function getRandomQuotes() {
+        //HTTP Request absetzen
         let response = await fetch('http://localhost:8080/api/whatdoyoumeme/quotes/random4',
             {
                 method: 'GET',
@@ -44,47 +50,68 @@
                 }
             }
         );
+
+        //Antwort empfangen
         let data = await response.json();
 
+        //div holen, in dem die Quotes dynamisch eingefügt werden
         var memequotes = document.getElementById('memequotes');
 
+        //für jedes Quote-Objekt
         data.forEach((randomquote) => {
+            //div erstellen und mit der Klasse 'col-3' erweitern
             let col = document.createElement('div');
             col.classList.add('col-3');
 
+            //div erstellen für eine Card
             let carddiv = document.createElement("div");
             carddiv.classList.add('card', 'bg-primary');
             carddiv.style = 'width: 18rem';
 
+            //div erstellen für card body
             let cardbody = document.createElement("div");
             cardbody.classList.add('card-body', 'text-white');
 
+            //p für den Cardtext (Quote)
             let quote = document.createElement("p");
             quote.classList.add('card-text');
             quote.appendChild(document.createTextNode(randomquote.text));
 
+            //Button für Likes
             let likes = document.createElement("button");
+            //in Funktion getRandomPicture() wird die pid hidden eingefügt, diese wird für das Erstellen eines Memes benötigt
+            //pid aus HTML holen
             let pid = document.getElementById("pid").innerHTML;
+            //einen EventListener auf den Button aktivieren, beim Klicken soll die Funktion ausgeführt werden
+            //die Funktion matching wird mit der ID des Quotes und des Pictures als Parameter aufgerufen
             likes.addEventListener("click", function match() { matching(randomquote.id, pid); });
+            //Text innerhalb des Buttons hinzufügen
             likes.innerHTML = "Add me!";
+            //Klassen für das Aussehen eines Buttons hinzufügen
             likes.classList.add('btn', 'btn-light');
 
-            memequotes.appendChild(col);
-            col.appendChild(carddiv);
-            carddiv.appendChild(cardbody);
-            cardbody.appendChild(quote);
-            cardbody.appendChild(likes);
+                                        //Aufbau eines Elements
+            memequotes.appendChild(col); //"Mutter-Div" -> col
+            col.appendChild(carddiv); //"Mutter-Div" -> col -> card
+            carddiv.appendChild(cardbody); //"Mutter-Div" -> col -> card -> cardbody
+            cardbody.appendChild(quote); //"Mutter-Div" -> col -> card -> cardbody -> quote
+            cardbody.appendChild(likes); //"Mutter-Div" -> col -> card -> cardbody -> quote, likebtn
 
         })
-
-
     }
 
+    /**
+     * Ein zufälliges Bild wird für das Spiel benötigt.
+     * Es wird von der Rest-API ein zufälliges Bild angefragt. 
+     **/
     async function getRandomPicture() {
+        //HTTP Request
         fetch('http://localhost:8080/api/whatdoyoumeme/pictures/random1', {
             method: 'GET'
         })
+            //Antwort(Promise) in JSON umwandeln
             .then(response => response.json())
+            //für das Element(Objekt) im Response
             .then(randompic => {
                 let memepicture = document.getElementById("memepicture");
 
@@ -109,10 +136,15 @@
             })
     }
 
+    /**
+     * Mit einem Picture und einem Quote wird ein Meme erstellt.
+     * Es werden die IDs mitgeschickt und anhand dieser die Objekte ermittelt. 
+     **/
     async function matching(qid, pid) {
         fetch('http://localhost:8080/api/whatdoyoumeme/memes/' + pid + '/' + qid, {
             method: 'GET'
         })
+            //wenn der Status 200 zurückgibt, wird die Seite neu geladen
             .then(response => response.status == 200 ? document.location.reload() : console.log(response.status));
     }
 </script>

@@ -40,10 +40,13 @@
 <script>
 
     async function sendData() {
+
+        //Wert aus Value von Inputfeld holen
         const text = $('input[name=text]').val();
 
 
         try {
+            //HTTP Request absetzen
             const response = await fetch('http://localhost:8080/api/whatdoyoumeme/addquote',
                 {
                     method: 'POST',
@@ -55,16 +58,20 @@
                     body: JSON.stringify({ "text": text})
                 })
 
+            //Antwort erhalten
             const data = await response.json()
 
             $('#textError').html('') //Fehlermeldungen leeren
 
+            //Auf Fehlercodes prüfen
             if (data.code) {
+                //Auf Fehlercodes des Inputs prüfen
                 if (data.formValidationsErrors) {
                     if (data.formValidationsErrors.text) {
                         $('#textError').html(data.formValidationsErrors.text)
                     }
 
+                //Fehlercode wird gesendet bei Exception
                 } else if (data.code == 1020 & data.message) {
                     $('#inputresponse').html("Quote nicht gefunden!")
                 }
@@ -72,6 +79,7 @@
                 $('#textError').html('')
                 $('#inputresponse').html("Aktualisierung erfolgreich! Sie werden umgeleitet...")
 
+                //Umleitung mit einer Verzögerung von 3000ms
                 setTimeout(function () { window.location.href = "allquotes.html"; }, 3000);
             }
 
